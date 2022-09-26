@@ -54,5 +54,7 @@ done
 
 #TO PRINT WAGES FOR A MONTH
 totalWageOfMonth=$(($(calculateWage $totalEmployeeHours)))
+
+echo "Days:" $totalWorkingDays
 echo "Daily wages: ${dailyWage[@]}"
 echo "Total Wage:" $totalWageOfMonth
