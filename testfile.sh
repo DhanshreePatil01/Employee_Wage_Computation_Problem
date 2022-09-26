@@ -2,56 +2,57 @@
 
 echo "---------------------------------- Welcome To Employee Wage Compution --------------------------------------------"
 
-isPresent=1
+WAGE_PER_HOUR=20
+IS_FULL_TIME=2
+IS_PART_TIME=1
+EMPLOYEE_HOUR_FULLTIME=8
+EMPLOYEE_HOUR_PARTTIME=4
 
-#TO VARIABLE
-randomNumber=$((RANDOM%2))
-echo "Choice"
-read -p "To use case five case statement and case choice zero is Daily employee wage and case choice one is parttime employee wage:" caseChoice
-#TO CHECK THE EMPLOYEE PRESENT AND ABSENT
-if [ $randomNumber -eq 	$isPresent ]
-then
-	echo "Employee Present"
-#using use case statement
-case "$caseChoice" in
-	0) echo "To calculate Daily Employee Wage"
+# USER INPUTE
+read -p "To number of working days :" NUMBER_OF_WORKING_DAYS
+read -p "To number of working hour :" NUMBER_OF_WORKING_HOURS
 
-		#TO FUNCTION CALCULATE EMPLOYEE WAGE
-		function calculateDailyEmployeeWageWorkHours(){
-		read -p "Assume Wage per hour is :" isWagePerHour "rupees"
-		isDayHour=8
+#VARIABLE
+totalSalary=0
+totalEmployeeHours=0
+totalWorkingDays=0
 
-		#TO ONE DAY WORKING EMPLOYEE WAGE
-		calculateEmployeeWageForOneDay=$(( $isWagePerHour * $isDayHour ))
-		read -p "working days :" isDay
-		#TO MONTH DAY WORKING EMPLOYEE WAGE
-		calculateEmployeeWageForMonth=$(( $calculateEmployeeWageForOneDay  *  $isDay ))
-		echo "To calculate employee wages for a Month :" $calculateEmployeeWageForMonth "rupees"
-		}
-		#TO FUNCTION CALL
-		calculateDailyEmployeeWageWorkHours
-		;;
-	1)echo "To calculate part time Employee and wage"
+#TO FUNCTION TO GET WORK HOURS
+function getWorkHours()
+{
+	randomShiftCheck=$((RANDOM%3))
+	case $randomShiftCheck in
 
-		#TO FUNCTION CALCULATE PART TIME EMPLOYEE WAGE
-		function partTimeEmployeeAndWageWorkHours(){
-		read -p "Assume Wage per hour is :" isWagePerHour "rupees"
-		isDayHour=8
+		$IS_FULL_TIME )
+			employeeHour=$((EMPLOYEE_HOUR_FULLTIME))
+			;;
+		$IS_PART_TIME )
+			employeeHour=$((EMPLOYEE_HOUR_PARTTIME))
+			;;
+		* )
+			employeeHour=0
+			;;
+   esac
+	echo $employeeHour
+}
 
-		#TO ONE DAY WORKING EMPLOYEE WAGE
-		calculateEmployeeWageForOneDay=$(( $isWagePerHour * $isDayHour ))
-		read -p "TO part time working days :" isDay
+#FUNCTION TO CALCULATE WAGE
+function calculateWage()
+{
+	employeeHour=$1
+	wage=$(($employeeHour*$WAGE_PER_HOUR))
+	echo $wage
+}
 
-		#TO MONTH DAY WORKING EMPLOYEE WAGE
-		calculateEmployeeWageForMonth=$(( $calculateEmployeeWageForOneDay * $isDay ))
-		echo "To calculate employee part time wages for a Month :" $calculateEmployeeWageForMonth "rupees"
-		}
-		partTimeEmployeeAndWageWorkHours
-		;;
-		*)echo "No choice."
-		;;
-esac
+#GET WORK HOUR FROM FUNCTION AND CALCULATE DAILY WAGE TILL CONDITION SATISFIED
+while [[ $totalEmployeeHours -lt $NUMBER_OF_WORKING_HOURS && $totalWorkingDays -lt $NUMBER_OF_WORKING_DAYS ]]
+do
+	((totalWorkingDays++))
+	dailyWage[totalWorkingDays]=$(calculateWage $(getWorkHours))
+	totalEmployeeHours=$(($totalEmployeeHours + $(getWorkHours)))
+done
 
-else
-   echo "Employee Absent."
- fi
+#TO PRINT WAGES FOR A MONTH
+totalWageOfMonth=$(($(calculateWage $totalEmployeeHours)))
+echo "Daily wages: ${dailyWage[@]}"
+echo "Total Wage:" $totalWageOfMonth
