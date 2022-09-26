@@ -44,7 +44,7 @@ function calculateWage()
 	echo $wage
 }
 
-#GET WORK HOUR FROM FUNCTION AND CALCULATE DAILY WAGE TILL CONDITION SATISFIED
+#TO CALCULATE DAILY WAGE TILL CONDITION SATISFIED
 while [[ $totalEmployeeHours -lt $NUMBER_OF_WORKING_HOURS && $totalWorkingDays -lt $NUMBER_OF_WORKING_DAYS ]]
 do
 	((totalWorkingDays++))
@@ -52,9 +52,8 @@ do
 	totalEmployeeHours=$(($totalEmployeeHours + $(getWorkHours)))
 done
 
-#TO PRINT WAGES FOR A MONTH
+#TO PRINT AND STORE WAGES FOR A MONTH
 totalWageOfMonth=$(($(calculateWage $totalEmployeeHours)))
-
-echo "Days:" $totalWorkingDays
+echo "Total wage :"$totaleWageOfMonth
 echo "Daily wages: ${dailyWage[@]}"
-echo "Total Wage:" $totalWageOfMonth
+echo "Day:${!dailyWage[@]}"
