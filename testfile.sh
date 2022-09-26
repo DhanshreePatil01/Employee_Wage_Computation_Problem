@@ -22,3 +22,7 @@ function calculateDailyEmployeeWage(){
 	echo "To calculate daily employee wage :" $calculateEmployeeWage "rupees"
 }
 calculateDailyEmployeeWage
+partTimeEmployeeAndWage
+else
+   echo "Employee Absent"
+ fi
